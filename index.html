@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ostinato — Online zongoraiskola Ördög Katával</title>
+<meta name="description" content="Tanulj meg online zongorázni Ördög Katával. Strukturált videós leckék, a saját tempódban, bárhonnan." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ============================================================
+   ostinato — modern facelift prototípus
+   Design tokenek a valós márkaszínekből (Elementor globals)
+   ============================================================ */
+:root{
+  --teal-900:#072f2f;
+  --teal-800:#0a4747;
+  --teal-700:#107070;   /* eredeti elsődleges szín */
+  --teal-600:#137f80;
+  --teal-500:#1c9b9b;
+  --teal-glow:#2bd0c8;
+  --gold:#fcb900;
+  --gold-soft:#ffd45e;
+  --orange:#ff6900;
+  --cream:#fbf8f3;
+  --cream-2:#f4eee4;
+  --ink:#0e2424;
+  --ink-soft:#3f5454;
+  --muted:#708486;
+  --white:#ffffff;
+  --radius:22px;
+  --radius-sm:14px;
+  --shadow-sm:0 4px 18px rgba(7,47,47,.08);
+  --shadow-md:0 18px 50px rgba(7,47,47,.14);
+  --shadow-lg:0 40px 90px rgba(7,47,47,.22);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Nunito",-apple-system,Segoe UI,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --container:1180px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--sans);
+  color:var(--ink);
+  background:var(--cream);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.container{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:24px}
+
+h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;line-height:1.08;letter-spacing:-.01em}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;
+  font-size:.78rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--teal-700);
+}
+.eyebrow::before{content:"";width:26px;height:2px;background:linear-gradient(90deg,var(--teal-500),var(--gold));border-radius:2px}
+
+/* ---------- buttons ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  font-family:var(--sans);font-weight:700;font-size:1rem;
+  padding:15px 28px;border-radius:999px;cursor:pointer;border:0;
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s;
+  position:relative;white-space:nowrap;
+}
+.btn .ico{transition:transform .35s var(--ease)}
+.btn:hover .ico{transform:translateX(4px)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--teal-600),var(--teal-800));
+  color:#fff;box-shadow:0 14px 30px rgba(16,112,112,.38);
+}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 20px 44px rgba(16,112,112,.5)}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--orange));color:#231400;box-shadow:0 14px 30px rgba(252,185,0,.38)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 20px 44px rgba(252,185,0,.5)}
+.btn-ghost{background:rgba(255,255,255,.6);color:var(--teal-800);border:1.5px solid rgba(16,112,112,.25);backdrop-filter:blur(8px)}
+.btn-ghost:hover{transform:translateY(-3px);background:#fff;border-color:var(--teal-500)}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:22px 0;transition:padding .4s var(--ease),background .4s,box-shadow .4s;
+}
+.header.scrolled{
+  padding:12px 0;background:rgba(251,248,243,.82);
+  backdrop-filter:blur(16px);box-shadow:0 6px 30px rgba(7,47,47,.08);
+}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:12px;font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--teal-800)}
+.brand .note{
+  width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--teal-600),var(--teal-800));color:#fff;font-size:1.2rem;
+  box-shadow:0 8px 20px rgba(16,112,112,.35);transition:transform .4s var(--ease)
+}
+.brand:hover .note{transform:rotate(-8deg) scale(1.08)}
+.brand small{display:block;font-family:var(--sans);font-size:.62rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-top:-4px}
+.menu{display:flex;align-items:center;gap:6px;list-style:none}
+.menu a{
+  font-weight:600;font-size:.96rem;color:var(--ink-soft);padding:9px 15px;border-radius:999px;
+  position:relative;transition:color .25s,background .25s
+}
+.menu a::after{
+  content:"";position:absolute;left:15px;right:15px;bottom:4px;height:2px;border-radius:2px;
+  background:linear-gradient(90deg,var(--teal-500),var(--gold));transform:scaleX(0);transform-origin:left;
+  transition:transform .35s var(--ease)
+}
+.menu a:hover{color:var(--teal-800)}
+.menu a:hover::after{transform:scaleX(1)}
+.nav-actions{display:flex;align-items:center;gap:14px}
+.cart{position:relative;display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#fff;box-shadow:var(--shadow-sm);color:var(--teal-800);transition:transform .3s}
+.cart:hover{transform:translateY(-2px)}
+.cart .badge{position:absolute;top:-3px;right:-3px;background:var(--orange);color:#fff;font-size:.62rem;font-weight:800;min-width:18px;height:18px;border-radius:9px;display:grid;place-items:center;padding:0 4px}
+.burger{display:none;flex-direction:column;gap:5px;background:none;border:0;cursor:pointer;padding:10px}
+.burger span{width:24px;height:2px;background:var(--teal-800);border-radius:2px;transition:.3s}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero{position:relative;padding:170px 0 90px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(1100px 600px at 78% -5%,rgba(43,208,200,.18),transparent 55%),
+  radial-gradient(900px 700px at 8% 100%,rgba(252,185,0,.14),transparent 55%),
+  var(--cream)}
+.blob{position:absolute;border-radius:50%;filter:blur(60px);z-index:-1;opacity:.5;animation:float 14s ease-in-out infinite}
+.blob.b1{width:340px;height:340px;background:rgba(43,208,200,.4);top:-60px;right:6%}
+.blob.b2{width:280px;height:280px;background:rgba(252,185,0,.32);bottom:-40px;left:0;animation-delay:-5s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-24px,28px) scale(1.08)}}
+
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(2.7rem,5.4vw,4.5rem);color:var(--ink);margin:18px 0 20px}
+.hero h1 .hl{position:relative;color:var(--teal-700);font-style:italic;white-space:nowrap}
+.hero h1 .hl::after{content:"";position:absolute;left:0;right:0;bottom:.08em;height:.18em;background:linear-gradient(90deg,var(--gold),var(--orange));opacity:.5;border-radius:6px;z-index:-1}
+.hero p.lead{font-size:1.18rem;color:var(--ink-soft);max-width:520px;margin-bottom:32px}
+.hero-cta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:34px}
+.hero-trust{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.avatars{display:flex}
+.avatars span{width:42px;height:42px;border-radius:50%;border:3px solid var(--cream);margin-left:-12px;background-size:cover;background-position:center;box-shadow:var(--shadow-sm)}
+.avatars span:first-child{margin-left:0}
+.hero-trust .stars{color:var(--gold);font-size:1rem;letter-spacing:2px}
+.hero-trust small{color:var(--muted);font-weight:600;display:block}
+
+/* hero visual */
+.hero-visual{position:relative}
+.hero-photo{
+  position:relative;border-radius:30px;overflow:hidden;box-shadow:var(--shadow-lg);
+  aspect-ratio:4/4.4;background:#0a4747 url('https://ostinato.hu/wp-content/uploads/2022/04/piano-g2247dc319_1280-1.jpg') center/cover no-repeat;
+  transform:rotate(1.5deg);
+}
+.hero-photo::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(7,47,47,.45))}
+.hero-card{
+  position:absolute;left:-26px;bottom:34px;z-index:3;background:rgba(255,255,255,.85);
+  backdrop-filter:blur(14px);border:1px solid rgba(255,255,255,.6);
+  padding:16px 20px;border-radius:18px;box-shadow:var(--shadow-md);
+  display:flex;align-items:center;gap:14px;animation:float 7s ease-in-out infinite
+}
+.hero-card .ring{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal-600),var(--teal-800));color:#fff;font-size:1.3rem}
+.hero-card b{font-family:var(--serif);font-size:1.5rem;color:var(--teal-800);line-height:1}
+.hero-card small{color:var(--muted);font-weight:600;font-size:.8rem}
+.hero-badge{
+  position:absolute;right:-14px;top:30px;z-index:3;background:linear-gradient(135deg,var(--gold),var(--orange));
+  color:#231400;font-weight:800;font-size:.82rem;padding:12px 18px;border-radius:14px;
+  box-shadow:var(--shadow-md);transform:rotate(5deg);animation:float 9s ease-in-out infinite reverse
+}
+.float-note{position:absolute;font-family:var(--serif);color:var(--teal-500);opacity:.25;pointer-events:none;animation:rise 9s linear infinite}
+@keyframes rise{0%{transform:translateY(20px) rotate(0);opacity:0}10%{opacity:.3}100%{transform:translateY(-160px) rotate(25deg);opacity:0}}
+
+/* scroll cue */
+.scroll-cue{display:flex;justify-content:center;margin-top:54px}
+.mouse{width:26px;height:42px;border:2px solid var(--teal-700);border-radius:14px;position:relative;opacity:.6}
+.mouse::after{content:"";position:absolute;left:50%;top:8px;transform:translateX(-50%);width:4px;height:8px;background:var(--teal-700);border-radius:3px;animation:wheel 1.6s infinite}
+@keyframes wheel{0%{opacity:1;top:8px}100%{opacity:0;top:22px}}
+
+/* ============================================================
+   MARQUEE (logos / trust strip)
+   ============================================================ */
+.marquee{background:var(--teal-800);color:rgba(255,255,255,.85);padding:18px 0;overflow:hidden;white-space:nowrap}
+.marquee-track{display:inline-flex;gap:56px;animation:scrollx 26s linear infinite;font-family:var(--serif);font-size:1.4rem;font-style:italic}
+.marquee-track span{display:inline-flex;align-items:center;gap:56px}
+.marquee-track span::after{content:"♪";color:var(--gold);font-style:normal}
+@keyframes scrollx{to{transform:translateX(-50%)}}
+
+/* ============================================================
+   GENERIC SECTION
+   ============================================================ */
+.section{padding:100px 0}
+.section-head{max-width:640px;margin:0 auto 60px;text-align:center}
+.section-head h2{font-size:clamp(2.1rem,3.8vw,3.2rem);margin:14px 0 16px;color:var(--ink)}
+.section-head p{color:var(--ink-soft);font-size:1.1rem}
+
+/* stats */
+.stats{background:linear-gradient(135deg,var(--teal-800),var(--teal-900));color:#fff;border-radius:32px;padding:54px 40px;margin-top:-40px;position:relative;z-index:2;box-shadow:var(--shadow-lg)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;text-align:center}
+.stat .num{font-family:var(--serif);font-size:clamp(2.4rem,5vw,3.4rem);font-weight:700;color:var(--gold-soft);line-height:1}
+.stat .lbl{color:rgba(255,255,255,.78);font-weight:600;margin-top:6px;font-size:.95rem}
+.stat+.stat{border-left:1px solid rgba(255,255,255,.12)}
+
+/* feature grid: Mit ad a kurzus */
+.features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.fcard{
+  background:#fff;border-radius:var(--radius);padding:30px 28px;box-shadow:var(--shadow-sm);
+  border:1px solid rgba(16,112,112,.06);position:relative;overflow:hidden;
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease)
+}
+.fcard::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,var(--teal-500),var(--gold));transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.fcard:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.fcard:hover::before{transform:scaleX(1)}
+.fcard .ficon{width:56px;height:56px;border-radius:16px;display:grid;place-items:center;font-size:1.6rem;margin-bottom:18px;background:linear-gradient(135deg,rgba(16,112,112,.12),rgba(252,185,0,.14));color:var(--teal-700);transition:transform .45s var(--ease)}
+.fcard:hover .ficon{transform:rotate(-6deg) scale(1.06)}
+.fcard h3{font-size:1.35rem;margin-bottom:8px;color:var(--ink)}
+.fcard p{color:var(--ink-soft);font-size:.97rem}
+
+/* audiences: Kiknek ajánlom */
+.aud{background:linear-gradient(180deg,var(--cream),var(--cream-2))}
+.aud-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.acard{
+  position:relative;border-radius:var(--radius);overflow:hidden;min-height:340px;display:flex;align-items:flex-end;
+  color:#fff;box-shadow:var(--shadow-sm);transition:transform .45s var(--ease),box-shadow .45s var(--ease)
+}
+.acard::before{content:"";position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .8s var(--ease);z-index:-2}
+.acard::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(7,47,47,.1),rgba(7,47,47,.82));z-index:-1}
+.acard:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.acard:hover::before{transform:scale(1.08)}
+.acard .inner{padding:26px}
+.acard h3{font-size:1.45rem;margin-bottom:6px}
+.acard p{font-size:.92rem;color:rgba(255,255,255,.85)}
+.a1::before{background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/piano-g2247dc319_1280-1.jpg')}
+.a2::before{background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/clu-soh-0OHsrQ6G5Cc-unsplash-1.png')}
+.a3::before{background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/omar-prestwich-HSd2y7VjX-E-unsplash-1.png')}
+.a4::before{background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/piano-g2247dc319_1280-1.jpg');filter:hue-rotate(15deg)}
+
+/* testimonial */
+.testi{background:linear-gradient(135deg,var(--teal-800),var(--teal-900));color:#fff;position:relative;overflow:hidden}
+.testi .quote-mark{position:absolute;top:-30px;left:40px;font-family:var(--serif);font-size:16rem;color:rgba(255,255,255,.06);line-height:1}
+.testi-wrap{display:grid;grid-template-columns:.8fr 1.2fr;gap:50px;align-items:center;position:relative}
+.testi-photo{width:100%;aspect-ratio:1;border-radius:26px;background:url('https://ostinato.hu/wp-content/uploads/2022/04/clu-soh-0OHsrQ6G5Cc-unsplash-1.png') center/cover;box-shadow:var(--shadow-md)}
+.testi blockquote{font-family:var(--serif);font-size:clamp(1.5rem,2.8vw,2.1rem);font-style:italic;line-height:1.4;margin-bottom:24px}
+.testi .who{display:flex;align-items:center;gap:14px}
+.testi .who b{font-size:1.05rem}
+.testi .who small{color:rgba(255,255,255,.7)}
+.testi .stars{color:var(--gold-soft);letter-spacing:3px;margin-bottom:18px;display:block}
+
+/* FAQ accordion */
+.faq-wrap{max-width:820px;margin:0 auto}
+.faq-item{background:#fff;border-radius:var(--radius-sm);margin-bottom:14px;box-shadow:var(--shadow-sm);overflow:hidden;border:1px solid rgba(16,112,112,.06)}
+.faq-q{width:100%;text-align:left;background:none;border:0;cursor:pointer;padding:22px 26px;display:flex;justify-content:space-between;align-items:center;gap:16px;font-family:var(--sans);font-weight:700;font-size:1.08rem;color:var(--ink)}
+.faq-q .pm{flex:0 0 auto;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,rgba(16,112,112,.12),rgba(252,185,0,.16));color:var(--teal-700);font-size:1.3rem;transition:transform .4s var(--ease)}
+.faq-item.open .pm{transform:rotate(45deg);background:var(--teal-700);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .45s var(--ease)}
+.faq-a p{padding:0 26px 22px;color:var(--ink-soft)}
+
+/* newsletter */
+.cta{position:relative;overflow:hidden}
+.cta-box{background:linear-gradient(135deg,var(--gold),var(--orange));border-radius:34px;padding:60px;color:#231400;position:relative;overflow:hidden;box-shadow:var(--shadow-lg)}
+.cta-box::after{content:"♫";position:absolute;right:-20px;bottom:-50px;font-size:18rem;font-family:var(--serif);color:rgba(255,255,255,.18)}
+.cta-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;position:relative;z-index:1}
+.cta-box h2{font-size:clamp(2rem,3.6vw,2.9rem);color:#231400;margin-bottom:12px}
+.cta-box p{font-size:1.08rem;color:#3a2400;max-width:420px}
+.nl-form{display:grid;gap:12px}
+.nl-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.nl-form input[type=text],.nl-form input[type=email]{
+  width:100%;padding:15px 18px;border-radius:12px;border:0;font-family:var(--sans);font-size:1rem;
+  background:rgba(255,255,255,.9);box-shadow:inset 0 0 0 1px rgba(0,0,0,.05)
+}
+.nl-form input:focus{outline:2px solid var(--teal-700);background:#fff}
+.nl-check{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;color:#3a2400}
+.nl-check a{text-decoration:underline}
+
+/* footer */
+.footer{background:var(--teal-900);color:rgba(255,255,255,.72);padding:70px 0 30px}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;margin-bottom:46px}
+.footer .brand{color:#fff}
+.footer .brand small{color:rgba(255,255,255,.5)}
+.footer p{font-size:.92rem;margin-top:14px;max-width:280px}
+.footer h4{color:#fff;font-family:var(--sans);font-size:.82rem;letter-spacing:.16em;text-transform:uppercase;margin-bottom:16px}
+.footer ul{list-style:none}
+.footer ul li{margin-bottom:9px}
+.footer ul a{font-size:.94rem;transition:color .25s;position:relative}
+.footer ul a:hover{color:var(--gold-soft)}
+.socials{display:flex;gap:10px;margin-top:6px}
+.socials a{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);transition:.3s}
+.socials a:hover{background:var(--gold);color:#231400;transform:translateY(-3px)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;font-size:.82rem;color:rgba(255,255,255,.5)}
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal{opacity:0;transform:translateY(38px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+.reveal[data-d="1"]{transition-delay:.08s}
+.reveal[data-d="2"]{transition-delay:.16s}
+.reveal[data-d="3"]{transition-delay:.24s}
+.reveal[data-d="4"]{transition-delay:.32s}
+.reveal[data-d="5"]{transition-delay:.4s}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media(max-width:980px){
+  .hero-grid{grid-template-columns:1fr;gap:46px}
+  .hero-visual{max-width:460px;margin-inline:auto}
+  .features-grid{grid-template-columns:repeat(2,1fr)}
+  .aud-grid{grid-template-columns:repeat(2,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr);gap:34px}
+  .stat+.stat{border-left:0}
+  .testi-wrap,.cta-grid{grid-template-columns:1fr}
+  .testi-photo{max-width:300px;margin-inline:auto}
+  .footer-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:680px){
+  .menu,.nav-actions .btn{display:none}
+  .burger{display:flex}
+  .menu.open{display:flex;position:absolute;top:72px;left:16px;right:16px;flex-direction:column;align-items:stretch;background:#fff;padding:14px;border-radius:18px;box-shadow:var(--shadow-md)}
+  .menu.open a{padding:13px 16px}
+  .features-grid,.aud-grid,.stats-grid,.nl-row,.footer-grid{grid-template-columns:1fr}
+  .cta-box,.stats{padding:36px 24px}
+  .section{padding:72px 0}
+  .hero{padding:140px 0 70px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<!-- ======================= HEADER ======================= -->
+<header class="header" id="header">
+  <div class="container nav">
+    <a href="#top" class="brand">
+      <span class="note">♪</span>
+      <span>ostinato<small>online zongoraiskola</small></span>
+    </a>
+    <ul class="menu" id="menu">
+      <li><a href="#start">Itt kezdj!</a></li>
+      <li><a href="#kurzus">Kurzusok</a></li>
+      <li><a href="#rolam">Ismerj meg!</a></li>
+      <li><a href="#kapcsolat">Így érsz el!</a></li>
+      <li><a href="#blog">Blog</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="cart" aria-label="Kosár">🛒<span class="badge">0</span></a>
+      <a href="#kurzus" class="btn btn-primary">Belépés <span class="ico">→</span></a>
+      <button class="burger" id="burger" aria-label="Menü"><span></span><span></span><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ======================= HERO ======================= -->
+<section class="hero" id="start">
+  <div class="hero-bg"></div>
+  <span class="blob b1"></span><span class="blob b2"></span>
+  <div class="float-note" style="left:20%;top:30%;font-size:2.4rem">♪</div>
+  <div class="float-note" style="left:60%;top:55%;font-size:3rem;animation-delay:3s">♫</div>
+  <div class="float-note" style="left:42%;top:18%;font-size:2rem;animation-delay:6s">♩</div>
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow reveal">Online zongoraiskola · 100% saját tempóban</span>
+        <h1 class="reveal" data-d="1">Tanulj meg online <span class="hl">zongorázni</span> Ördög Katával</h1>
+        <p class="lead reveal" data-d="2">Lépésről lépésre, érthető magyarázattal, bárhonnan és bármikor. Klasszikus alapok, modern megközelítéssel — az első hangtól az első darabodig.</p>
+        <div class="hero-cta reveal" data-d="3">
+          <a href="#kurzus" class="btn btn-primary">Itt kezdj! <span class="ico">→</span></a>
+          <a href="#kurzus" class="btn btn-ghost">Nézd meg a kurzusokat</a>
+        </div>
+        <div class="hero-trust reveal" data-d="4">
+          <div class="avatars">
+            <span style="background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/clu-soh-0OHsrQ6G5Cc-unsplash-1.png')"></span>
+            <span style="background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/omar-prestwich-HSd2y7VjX-E-unsplash-1.png')"></span>
+            <span style="background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/piano-g2247dc319_1280-1.jpg')"></span>
+          </div>
+          <div>
+            <div class="stars">★★★★★</div>
+            <small>500+ elégedett tanuló tanul velünk</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual reveal" data-d="2">
+        <div class="hero-photo"></div>
+        <div class="hero-badge">🎹 Kezdőtől haladóig</div>
+        <div class="hero-card">
+          <span class="ring">▶</span>
+          <div>
+            <b>10 modul</b>
+            <small>videós lecke, lépésről lépésre</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-cue reveal" data-d="3"><div class="mouse"></div></div>
+  </div>
+</section>
+
+<!-- ======================= MARQUEE ======================= -->
+<div class="marquee">
+  <div class="marquee-track">
+    <span>Saját tempó</span><span>Videós leckék</span><span>Élethosszig hozzáférés</span><span>Mobilbarát</span><span>Kottaolvasás</span>
+    <span>Saját tempó</span><span>Videós leckék</span><span>Élethosszig hozzáférés</span><span>Mobilbarát</span><span>Kottaolvasás</span>
+  </div>
+</div>
+
+<!-- ======================= STATS ======================= -->
+<section class="section" style="padding-top:60px" id="kurzus">
+  <div class="container">
+    <div class="stats reveal">
+      <div class="stats-grid">
+        <div class="stat"><div class="num" data-count="500" data-suffix="+">0</div><div class="lbl">tanuló</div></div>
+        <div class="stat"><div class="num" data-count="10">0</div><div class="lbl">videós modul</div></div>
+        <div class="stat"><div class="num" data-count="120" data-suffix="+">0</div><div class="lbl">gyakorlat &amp; darab</div></div>
+        <div class="stat"><div class="num" data-count="49" data-decimal="true">0</div><div class="lbl">átlagos értékelés</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FEATURES: Mit ad a kurzus ======================= -->
+<section class="section" style="padding-top:30px">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Amit kapsz</span>
+      <h2>Mit ad a kurzus?</h2>
+      <p>Minden, ami a magabiztos zongorázáshoz kell — egyetlen, jól felépített helyen.</p>
+    </div>
+    <div class="features-grid">
+      <div class="fcard reveal" data-d="1"><div class="ficon">🎼</div><h3>Strukturált tananyag</h3><p>Logikusan egymásra épülő modulok, hogy soha ne érezd magad elveszettnek.</p></div>
+      <div class="fcard reveal" data-d="2"><div class="ficon">🎥</div><h3>Videós leckék</h3><p>Közelképes, érthető magyarázat — pontosan látod, mit hol kell lefogni.</p></div>
+      <div class="fcard reveal" data-d="3"><div class="ficon">⏱️</div><h3>Saját tempó</h3><p>Akkor tanulsz, amikor neked jó. Megállíthatod, visszatekerheted bármikor.</p></div>
+      <div class="fcard reveal" data-d="1"><div class="ficon">🎵</div><h3>Kottaolvasás</h3><p>A nulláról építjük fel, hogy magabiztosan olvass új darabokat is.</p></div>
+      <div class="fcard reveal" data-d="2"><div class="ficon">🖐️</div><h3>Technikai gyakorlatok</h3><p>Ujjgyakorlatok és bemelegítők, amelyek tényleg fejlesztik a játékodat.</p></div>
+      <div class="fcard reveal" data-d="3"><div class="ficon">💬</div><h3>Személyes visszajelzés</h3><p>Kérdezhetsz, és építő visszajelzést kapsz a fejlődésedhez.</p></div>
+      <div class="fcard reveal" data-d="1"><div class="ficon">👥</div><h3>Közösség</h3><p>Hasonló cipőben járó tanulók, akikkel együtt motiváltabb a tanulás.</p></div>
+      <div class="fcard reveal" data-d="2"><div class="ficon">♾️</div><h3>Élethosszig hozzáférés</h3><p>Egyszer megveszed, és bármikor visszatérhetsz az anyaghoz.</p></div>
+      <div class="fcard reveal" data-d="3"><div class="ficon">📱</div><h3>Bárhol elérhető</h3><p>Telefonon, tableten, laptopon — a zongorád mellett is kéznél van.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= AUDIENCES ======================= -->
+<section class="section aud" id="rolam">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Neked szól</span>
+      <h2>Kiknek ajánlom a kurzusaim?</h2>
+      <p>Mindegy, hol tartasz most — van számodra egy jól kitaposott következő lépés.</p>
+    </div>
+    <div class="aud-grid">
+      <div class="acard a1 reveal" data-d="1"><div class="inner"><h3>Teljesen kezdőknek</h3><p>Soha nem ültél még zongorához? Itt a helyed — a legelső hangtól indulunk.</p></div></div>
+      <div class="acard a2 reveal" data-d="2"><div class="inner"><h3>Újrakezdőknek</h3><p>Gyerekként tanultál, de abbahagytad? Frissítsük fel együtt, ami benned van.</p></div></div>
+      <div class="acard a3 reveal" data-d="3"><div class="inner"><h3>Haladóknak</h3><p>Csiszolnád a technikádat és a zenei kifejezésed? Emeljük a következő szintre.</p></div></div>
+      <div class="acard a4 reveal" data-d="4"><div class="inner"><h3>Szülőknek &amp; gyerekeknek</h3><p>Játékos, türelmes felépítés, ami a gyerekeknek is élmény, nem teher.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= TESTIMONIAL ======================= -->
+<section class="section testi">
+  <span class="quote-mark">”</span>
+  <div class="container">
+    <div class="testi-wrap">
+      <div class="testi-photo reveal"></div>
+      <div class="reveal" data-d="1">
+        <span class="eyebrow" style="color:var(--gold-soft)">Kiemelt vélemény</span>
+        <span class="stars">★★★★★</span>
+        <blockquote>„Mindig is vágytam rá, hogy zongorázzak, de azt hittem, felnőttként már késő. Kata kurzusával fél év alatt eljutottam az első igazi darabomig — és minden percét élveztem.”</blockquote>
+        <div class="who">
+          <div class="avatars"><span style="background-image:url('https://ostinato.hu/wp-content/uploads/2022/04/omar-prestwich-HSd2y7VjX-E-unsplash-1.png')"></span></div>
+          <div><b>Nagy Eszter</b><br><small>kurzustag, 8 hónapja tanul</small></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= FAQ ======================= -->
+<section class="section">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="eyebrow">Mielőtt belevágsz</span>
+      <h2>Gyakori kérdések</h2>
+      <p>A leggyakoribb kételyek — őszintén megválaszolva.</p>
+    </div>
+    <div class="faq-wrap">
+      <div class="faq-item reveal" data-d="1">
+        <button class="faq-q">Nem tudok kottát olvasni — baj ez?<span class="pm">+</span></button>
+        <div class="faq-a"><p>Egyáltalán nem. A kurzus a nulláról építi fel a kottaolvasást, így lépésről lépésre, gyakorlással sajátítod el — semmilyen előzetes tudás nem kell hozzá.</p></div>
+      </div>
+      <div class="faq-item reveal" data-d="2">
+        <button class="faq-q">Nincs igazi zongorám, csak egy keyboardom. Megfelel?<span class="pm">+</span></button>
+        <div class="faq-a"><p>A kezdéshez tökéletesen megfelel egy keyboard is. Ahogy haladsz, javasolni fogjuk, mire érdemes figyelni egy súlyozott billentyűzetnél, de elindulni bármivel tudsz.</p></div>
+      </div>
+      <div class="faq-item reveal" data-d="3">
+        <button class="faq-q">Mennyi időt kell hetente rászánnom?<span class="pm">+</span></button>
+        <div class="faq-a"><p>Már napi 15–20 perc rendszeres gyakorlással is szépen fejlődsz. A leckéket a saját tempódban végzed, így a naptáradhoz igazítod, nem fordítva.</p></div>
+      </div>
+      <div class="faq-item reveal" data-d="4">
+        <button class="faq-q">Meddig férek hozzá az anyaghoz?<span class="pm">+</span></button>
+        <div class="faq-a"><p>Élethosszig. Egyszer csatlakozol, és onnantól bármikor visszatérhetsz a leckékhez, újranézheted őket, és követheted a frissítéseket is.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= NEWSLETTER CTA ======================= -->
+<section class="section cta" id="kapcsolat">
+  <div class="container">
+    <div class="cta-box reveal">
+      <div class="cta-grid">
+        <div>
+          <span class="eyebrow" style="color:#231400">Ne maradj le</span>
+          <h2>Kezdd ingyenes leckével!</h2>
+          <p>Iratkozz fel, és elküldjük az első leckét, valamint a tippeket, amikkel a leggyorsabban indulhatsz el a zongorázásban.</p>
+        </div>
+        <form class="nl-form" onsubmit="return false">
+          <div class="nl-row">
+            <input type="text" placeholder="Vezetéknév" aria-label="Vezetéknév" />
+            <input type="text" placeholder="Keresztnév" aria-label="Keresztnév" />
+          </div>
+          <input type="email" placeholder="E-mail címed" aria-label="E-mail" />
+          <label class="nl-check"><input type="checkbox" /> Elfogadom az <a href="#">adatkezelési tájékoztatót</a>, és hozzájárulok a hírlevél küldéséhez.</label>
+          <button class="btn btn-primary" type="submit" style="justify-content:center">Feliratkozom <span class="ico">→</span></button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ======================= FOOTER ======================= -->
+<footer class="footer" id="blog">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#top" class="brand"><span class="note">♪</span><span>ostinato<small>online zongoraiskola</small></span></a>
+        <p>Online zongorakurzusok kezdőtől haladóig — érthetően, türelmesen, a saját tempódban, Ördög Katával.</p>
+        <div class="socials">
+          <a href="#" aria-label="Facebook">f</a>
+          <a href="#" aria-label="YouTube">▶</a>
+          <a href="#" aria-label="Instagram">◎</a>
+        </div>
+      </div>
+      <div>
+        <h4>Navigáció</h4>
+        <ul><li><a href="#start">Itt kezdj!</a></li><li><a href="#kurzus">Kurzusok</a></li><li><a href="#rolam">Ismerj meg!</a></li><li><a href="#blog">Blog</a></li></ul>
+      </div>
+      <div>
+        <h4>Jogi</h4>
+        <ul><li><a href="#">Adatkezelési tájékoztató</a></li><li><a href="#">ÁSZF</a></li><li><a href="#">Cookie-szabályzat</a></li></ul>
+      </div>
+      <div>
+        <h4>Kapcsolat</h4>
+        <ul><li>Ördög Kata e.v.</li><li><a href="mailto:info@ostinato.hu">info@ostinato.hu</a></li><li>Nyilvántartási szám: 55812650</li></ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 ostinato.hu — Minden jog fenntartva.</span>
+      <span>Prototípus — modern design ráncfelvarrás koncepció</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------- sticky header ---------- */
+const header=document.getElementById('header');
+const onScroll=()=>header.classList.toggle('scrolled',window.scrollY>30);
+onScroll();addEventListener('scroll',onScroll,{passive:true});
+
+/* ---------- mobile menu ---------- */
+const burger=document.getElementById('burger'),menu=document.getElementById('menu');
+burger.addEventListener('click',()=>menu.classList.toggle('open'));
+menu.addEventListener('click',e=>{if(e.target.tagName==='A')menu.classList.remove('open')});
+
+/* ---------- scroll reveal ---------- */
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{if(en.isIntersecting){en.target.classList.add('in');io.unobserve(en.target)}});
+},{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ---------- animated counters ---------- */
+const fmt=(v,dec,suf)=>dec?(v/10).toFixed(1).replace('.',',')+(suf||''):Math.round(v)+(suf||'');
+const counters=document.querySelectorAll('[data-count]');
+const cio=new IntersectionObserver((entries)=>{
+  entries.forEach(en=>{
+    if(!en.isIntersecting)return;
+    const el=en.target,target=+el.dataset.count,dec=el.dataset.decimal==='true',suf=el.dataset.suffix||'';
+    let start=null,dur=1600;
+    const step=t=>{
+      if(!start)start=t;const p=Math.min((t-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=fmt(target*eased,dec,suf);
+      if(p<1)requestAnimationFrame(step);else el.textContent=fmt(target,dec,suf);
+    };
+    requestAnimationFrame(step);cio.unobserve(el);
+  });
+},{threshold:.5});
+counters.forEach(c=>cio.observe(c));
+
+/* ---------- FAQ accordion ---------- */
+document.querySelectorAll('.faq-q').forEach(q=>{
+  q.addEventListener('click',()=>{
+    const item=q.parentElement,a=item.querySelector('.faq-a'),isOpen=item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(o=>{o.classList.remove('open');o.querySelector('.faq-a').style.maxHeight=null});
+    if(!isOpen){item.classList.add('open');a.style.maxHeight=a.scrollHeight+'px'}
+  });
+});
+
+/* ---------- subtle hero parallax ---------- */
+const photo=document.querySelector('.hero-photo');
+addEventListener('scroll',()=>{const y=window.scrollY;if(y<700&&photo)photo.style.transform=`rotate(1.5deg) translateY(${y*0.06}px)`;},{passive:true});
+</script>
+</body>
+</html>

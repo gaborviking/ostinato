@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ostinato.hu — Állapotfelmérés és továbblépési javaslat</title>
+<meta name="description" content="Az ostinato.hu jelenlegi állapota és a felelős továbblépés útja — állapotfelmérés és javaslat Ördög Katának." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --teal-900:#072f2f; --teal-800:#0a4747; --teal-700:#107070; --teal-600:#137f80;
+  --teal-500:#1c9b9b; --teal-glow:#2bd0c8;
+  --gold:#fcb900; --gold-soft:#ffd45e; --orange:#ff6900;
+  --cream:#fbf8f3; --cream-2:#f4eee4;
+  --ink:#0e2424; --ink-soft:#3f5454; --muted:#708486; --white:#fff;
+  --red:#d8442f; --amber:#e08a1e; --green:#2e9b6b;
+  --radius:20px; --radius-sm:14px;
+  --shadow-sm:0 4px 18px rgba(7,47,47,.07);
+  --shadow-md:0 18px 50px rgba(7,47,47,.13);
+  --shadow-lg:0 40px 90px rgba(7,47,47,.20);
+  --serif:"Cormorant Garamond",Georgia,serif;
+  --sans:"Nunito",-apple-system,Segoe UI,sans-serif;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --container:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);color:var(--ink);background:var(--cream);line-height:1.7;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{width:100%;max-width:var(--container);margin-inline:auto;padding-inline:26px}
+h1,h2,h3,h4,.serif{font-family:var(--serif);font-weight:600;line-height:1.1;letter-spacing:-.01em;color:var(--ink)}
+p{margin-bottom:0}
+strong{font-weight:700;color:var(--teal-800)}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;font-size:.74rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;color:var(--teal-700)}
+.eyebrow::before{content:"";width:24px;height:2px;background:linear-gradient(90deg,var(--teal-500),var(--gold));border-radius:2px}
+
+/* ---------- top bar ---------- */
+.topbar{position:fixed;top:0;left:0;right:0;z-index:100;padding:14px 0;transition:.4s var(--ease)}
+.topbar.scrolled{background:rgba(251,248,243,.88);backdrop-filter:blur(16px);box-shadow:0 6px 30px rgba(7,47,47,.08);padding:9px 0}
+.topnav{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--serif);font-size:1.45rem;font-weight:700;color:var(--teal-800)}
+.brand .note{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal-600),var(--teal-800));color:#fff;font-size:1.05rem;box-shadow:0 8px 20px rgba(16,112,112,.32)}
+.brand small{display:block;font-family:var(--sans);font-size:.56rem;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);font-weight:800;margin-top:-3px}
+.topmenu{display:flex;align-items:center;gap:4px;list-style:none}
+.topmenu a{font-weight:700;font-size:.86rem;color:var(--ink-soft);padding:8px 13px;border-radius:999px;transition:.25s}
+.topmenu a:hover{color:var(--teal-800);background:rgba(16,112,112,.08)}
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--sans);font-weight:800;font-size:.92rem;padding:12px 22px;border-radius:999px;cursor:pointer;border:0;transition:.35s var(--ease);white-space:nowrap}
+.btn-print{background:linear-gradient(135deg,var(--teal-600),var(--teal-800));color:#fff;box-shadow:0 12px 26px rgba(16,112,112,.34)}
+.btn-print:hover{transform:translateY(-2px);box-shadow:0 18px 36px rgba(16,112,112,.46)}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding:150px 0 70px;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:-2;background:
+  radial-gradient(1000px 560px at 82% -8%,rgba(43,208,200,.16),transparent 55%),
+  radial-gradient(860px 640px at 4% 104%,rgba(252,185,0,.13),transparent 55%),var(--cream)}
+.blob{position:absolute;border-radius:50%;filter:blur(64px);z-index:-1;opacity:.45;animation:float 15s ease-in-out infinite}
+.blob.b1{width:320px;height:320px;background:rgba(43,208,200,.4);top:-50px;right:5%}
+.blob.b2{width:260px;height:260px;background:rgba(252,185,0,.32);bottom:-30px;left:-2%;animation-delay:-5s}
+@keyframes float{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22px,26px) scale(1.07)}}
+.hero h1{font-size:clamp(2.5rem,5.4vw,4rem);margin:16px 0 18px;color:var(--teal-900)}
+.hero h1 .hl{color:var(--teal-700);font-style:italic;position:relative}
+.hero h1 .hl::after{content:"";position:absolute;left:0;right:0;bottom:.05em;height:.16em;background:linear-gradient(90deg,var(--gold),var(--orange));opacity:.45;border-radius:6px;z-index:-1}
+.hero .sub{font-size:1.2rem;color:var(--ink-soft);max-width:640px;margin-bottom:26px}
+.meta{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.meta .m{background:#fff;border:1px solid rgba(16,112,112,.1);box-shadow:var(--shadow-sm);border-radius:12px;padding:9px 15px;font-size:.84rem}
+.meta .m b{font-family:var(--serif);font-size:1rem;color:var(--teal-800);display:block;font-weight:600}
+.meta .m span{color:var(--muted);font-weight:700;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase}
+
+/* ---------- sections ---------- */
+section.block{padding:64px 0;position:relative}
+section.block:nth-child(even){background:linear-gradient(180deg,rgba(244,238,228,.5),rgba(251,248,243,0))}
+.sec-head{max-width:760px;margin-bottom:30px}
+.sec-head h2{font-size:clamp(1.9rem,3.6vw,2.8rem);margin:12px 0 8px}
+.sec-head .intro{color:var(--ink-soft);font-size:1.08rem}
+.lvl{font-family:var(--serif);font-size:1.45rem;font-weight:600;color:var(--teal-800);margin:30px 0 12px;padding-bottom:8px;border-bottom:2px solid rgba(16,112,112,.14)}
+
+/* ---------- callouts ---------- */
+.callout{background:#fff;border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow-sm);border-left:5px solid var(--teal-600);margin:18px 0}
+.callout.tint{background:linear-gradient(135deg,rgba(16,112,112,.07),rgba(43,208,200,.05));border-left-color:var(--teal-600)}
+.callout.gold{background:linear-gradient(135deg,rgba(252,185,0,.14),rgba(255,105,0,.06));border-left-color:var(--gold)}
+.callout .k{font-weight:800;color:var(--teal-800)}
+.callout.italic p{font-style:italic;color:var(--ink-soft)}
+
+/* price card */
+.price{display:flex;flex-wrap:wrap;align-items:center;gap:24px;background:linear-gradient(135deg,var(--teal-800),var(--teal-900));color:#fff;border-radius:26px;padding:32px 34px;box-shadow:var(--shadow-md);position:relative;overflow:hidden;margin:22px 0}
+.price::after{content:"♫";position:absolute;right:-14px;bottom:-54px;font-size:13rem;font-family:var(--serif);color:rgba(255,255,255,.06)}
+.price .tag{font-size:.74rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-soft)}
+.price .amount{font-family:var(--serif);font-size:clamp(2.4rem,6vw,3.4rem);font-weight:700;line-height:1;color:#fff}
+.price .amount em{font-style:normal;color:var(--gold-soft)}
+.price .calc{color:rgba(255,255,255,.82);font-weight:600;max-width:360px}
+.price .pill{background:var(--gold);color:#231400;font-weight:800;font-size:.78rem;padding:7px 14px;border-radius:999px;display:inline-block;margin-bottom:10px}
+
+/* cards grid */
+.grid{display:grid;gap:18px}
+.grid.c3{grid-template-columns:repeat(3,1fr)}
+.grid.c2{grid-template-columns:repeat(2,1fr)}
+.card{background:#fff;border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm);border:1px solid rgba(16,112,112,.06);transition:.4s var(--ease)}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow-md)}
+.card .ic{width:48px;height:48px;border-radius:13px;display:grid;place-items:center;font-size:1.35rem;margin-bottom:14px;background:linear-gradient(135deg,rgba(16,112,112,.12),rgba(252,185,0,.14));color:var(--teal-700)}
+.card h4{font-size:1.18rem;margin-bottom:6px}
+.card p{color:var(--ink-soft);font-size:.96rem}
+.card .num{font-family:var(--serif);font-size:1.6rem;color:var(--gold);font-weight:700;line-height:1;margin-bottom:6px}
+
+/* lists */
+ul.clean{list-style:none;display:grid;gap:10px;margin:14px 0}
+ul.clean li{position:relative;padding-left:30px;color:var(--ink-soft)}
+ul.clean li::before{content:"♪";position:absolute;left:0;top:1px;color:var(--teal-600);font-family:var(--serif);font-weight:700}
+ul.check li::before{content:"✓";color:var(--green);font-family:var(--sans);font-weight:900}
+ol.steps{list-style:none;counter-reset:s;display:grid;gap:14px;margin:16px 0}
+ol.steps li{position:relative;padding:16px 18px 16px 60px;background:#fff;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm);border:1px solid rgba(16,112,112,.06)}
+ol.steps li::before{counter-increment:s;content:counter(s);position:absolute;left:16px;top:50%;transform:translateY(-50%);width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--teal-600),var(--teal-800));color:#fff;font-weight:800;font-size:.9rem}
+
+/* tables */
+.table-scroll{overflow-x:auto;margin:16px 0;border-radius:var(--radius-sm);box-shadow:var(--shadow-sm)}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:.92rem;min-width:540px}
+thead th{background:var(--teal-800);color:#fff;font-family:var(--serif);font-weight:600;font-size:1rem;text-align:left;padding:13px 15px}
+tbody td{padding:12px 15px;border-top:1px solid rgba(16,112,112,.1);color:var(--ink-soft);vertical-align:top}
+tbody tr:nth-child(even){background:rgba(244,238,228,.4)}
+tbody td:first-child{color:var(--ink);font-weight:700}
+td.c,th.c{text-align:center}
+tbody td.colhi{background:rgba(16,112,112,.07)!important}
+thead th.colhi{background:var(--teal-600)!important;box-shadow:inset 0 -3px 0 var(--gold)}
+
+/* chips */
+.chip{display:inline-flex;align-items:center;gap:5px;font-weight:800;font-size:.74rem;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.chip.ok{background:rgba(46,155,107,.14);color:var(--green)}
+.chip.warn{background:rgba(224,138,30,.15);color:var(--amber)}
+.chip.bad{background:rgba(216,68,47,.13);color:var(--red)}
+.chip.neutral{background:rgba(112,132,134,.14);color:var(--ink-soft)}
+.mark{font-weight:900}.mark.ok{color:var(--green)}.mark.warn{color:var(--amber)}.mark.bad{color:var(--red)}
+.badge-rec{background:var(--gold);color:#231400;font-weight:800;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:999px;margin-left:8px;vertical-align:middle}
+
+/* path cards */
+.path{background:#fff;border-radius:var(--radius);padding:24px 26px;box-shadow:var(--shadow-sm);border:1px solid rgba(16,112,112,.07);margin:16px 0;position:relative}
+.path.rec{border:2px solid var(--teal-500);box-shadow:var(--shadow-md)}
+.path .lab{font-family:var(--serif);font-size:1.3rem;color:var(--teal-800);font-weight:600;margin-bottom:6px;display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.path .verdict{font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.path.rec .verdict{color:var(--green)}.path .verdict.no{color:var(--red)}.path .verdict.part{color:var(--amber)}
+.path p{color:var(--ink-soft)}
+
+/* glossary */
+.gloss{display:grid;gap:10px;margin-top:14px}
+.gloss dt{font-family:var(--serif);font-weight:700;color:var(--teal-800);font-size:1.08rem}
+.gloss dd{color:var(--ink-soft);margin:2px 0 10px;padding-left:0}
+
+/* footer */
+.foot{height:20px;background:var(--teal-700);margin-top:40px}
+
+/* scroll cue + reveal */
+.scroll-cue{display:flex;justify-content:center;margin-top:42px}
+.mouse{width:24px;height:38px;border:2px solid var(--teal-700);border-radius:13px;position:relative;opacity:.55}
+.mouse::after{content:"";position:absolute;left:50%;top:7px;transform:translateX(-50%);width:4px;height:7px;background:var(--teal-700);border-radius:3px;animation:wheel 1.6s infinite}
+@keyframes wheel{0%{opacity:1;top:7px}100%{opacity:0;top:20px}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+/* responsive */
+@media(max-width:860px){
+  .topmenu{display:none}
+  .grid.c3,.grid.c2{grid-template-columns:1fr}
+  .price{flex-direction:column;align-items:flex-start;gap:14px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1;transform:none}}
+
+/* ---------- print → PDF ---------- */
+@media print{
+  @page{size:A4;margin:14mm}
+  body{background:#fff;color:#111;font-size:11pt}
+  .topbar,.scroll-cue,.blob,.hero-bg{display:none!important}
+  .reveal{opacity:1!important;transform:none!important}
+  .hero{padding:0 0 14px}
+  section.block{padding:14px 0;background:none!important}
+  section.block,.card,.callout,.path,.price,.table-scroll,ol.steps li{break-inside:avoid;box-shadow:none}
+  .card,.callout,.path{border:1px solid #ccc}
+  .price{background:#0a4747!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  thead th{background:#0a4747!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .chip,.badge-rec,.price .pill{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  a[href]::after{content:""}
+  h2,.lvl{break-after:avoid}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<header class="topbar" id="topbar">
+  <div class="wrap topnav">
+    <a href="#top" class="brand"><span>ostinato<small>állapotfelmérés</small></span></a>
+    <ul class="topmenu">
+      <li><a href="#osszefoglalo">Összefoglaló</a></li>
+      <li><a href="#oldal">Az oldal</a></li>
+      <li><a href="#audit">Technikai audit</a></li>
+      <li><a href="#utak">A három út</a></li>
+      <li><a href="#ar">Érték &amp; ár</a></li>
+      <li><a href="#lepesek">Lépések</a></li>
+    </ul>
+    <button class="btn btn-print" onclick="window.print()">⤓ Letöltés PDF-ként</button>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<main id="top">
+<section class="hero">
+  <div class="hero-bg"></div><span class="blob b1"></span><span class="blob b2"></span>
+  <div class="wrap">
+    <span class="eyebrow reveal">Állapotfelmérés &amp; továbblépési javaslat · 2026. június 10.</span>
+    <h1 class="reveal">Az <span class="hl">ostinato.hu</span> jelenlegi állapota<br>és a felelős továbblépés útja</h1>
+    <p class="sub reveal">Közös helyzetkép: hol tart most az oldal, mi változott négy év alatt a háttértechnológiában, és mi a legésszerűbb út, hogy az online zongoraiskola végre élesen, gyorsan és biztonságosan működjön.</p>
+    <div class="meta reveal">
+      <div class="m"><span>Címzett</span><b>Ördög Kata · ostinato.hu</b></div>
+      <div class="m"><span>Készítette</span><b>Gábor · eredeti fejlesztő</b></div>
+      <div class="m"><span>Jelleg</span><b>WooCommerce + tagsági rendszer</b></div>
+    </div>
+    <div class="scroll-cue reveal"><div class="mouse"></div></div>
+  </div>
+</section>
+
+<!-- ===== 1. ÖSSZEFOGLALÓ ===== -->
+<section class="block" id="osszefoglalo">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Vezetői összefoglaló</span>
+      <h2>A lényeg egy percben</h2>
+      <p class="intro">Ha csak ennyit olvasol el, a döntéshez minden fontosat itt megtalálsz.</p>
+    </div>
+
+    <div class="callout tint reveal">
+      <p><span class="k">Az ostinato.hu alapja a maga idejében (2022) korrekt, modern felépítésű oldal volt</span> — csak soha nem fejeződött be, és közben eltelt négy év. Ez alatt nem az oldal „romlott el", hanem <strong>az iparág lépett tovább</strong>: kicserélődtek a fizetési szolgáltatók, megváltozott a sütikezelés törvényi kerete, egy egész generációt ugrott a WooCommerce és az Elementor. Emiatt az oldal <strong>felelősen nem élesíthető a jelenlegi állapotában</strong>, és a puszta „frissítsük fel" út is zsákutca.</p>
+      <p style="margin-top:12px"><span class="k">A javaslatom: korszerű alapokra helyezés (újraépítés).</span> Egyszeri, de nagyobb munka — cserébe egy 4–5 évre előre stabil, gyors, hirdethető és könnyen kezelhető rendszer, amit valóban érdemes élesíteni.</p>
+    </div>
+
+    <div class="price reveal">
+      <div>
+        <span class="pill">Javasolt megoldás · C – újraépítés</span>
+        <div class="tag">A munka díja</div>
+        <div class="amount"><em>200 000 Ft</em></div>
+      </div>
+      <div class="calc">20 munkaóra × 10 000 Ft/óra alapján. Egyszeri befektetés egy évekre előre stabil, hirdethető rendszerbe — a részletes ütemtervvel együtt.</div>
+    </div>
+
+    <h3 class="lvl reveal">Miért nem elég „csak kiélesíteni"?</h3>
+    <div class="grid c3">
+      <div class="card reveal"><div class="ic">💳</div><h4>Nincs működő fizetés</h4><p>A beépített szolgáltató (Paylike) kivonult — jelenleg fizikailag nem lehet vásárolni az oldalon.</p></div>
+      <div class="card reveal"><div class="ic">⚖️</div><h4>Jogi kockázat</h4><p>A sütikezelő nem felel meg a 2024 óta kötelező Google Consent Mode-nak → hirdetési tiltás és bírságkockázat.</p></div>
+      <div class="card reveal"><div class="ic">🧩</div><h4>Technikai elavulás</h4><p>A kereskedelmi pluginek és az oldalépítő egy teljes generációval lemaradtak; a frissítésük végzetes hibát okozhat.</p></div>
+    </div>
+
+    <h3 class="lvl reveal">És a puszta frissítés?</h3>
+    <ul class="clean reveal">
+      <li>Egy lépésben négy évnyi változást ráengedni az oldalra reális eséllyel <strong>végzetes hibát (fatal error)</strong> okoz — a hibakeresés bizonytalan időigényű.</li>
+      <li>Ha mégis lefut, <strong>akkor is elavult marad</strong> alatta a technológia. A problémát nem megoldottuk, csak elhalasztottuk.</li>
+    </ul>
+
+    <h3 class="lvl reveal">A három lehetséges út — dióhéjban</h3>
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Út</th><th>Mit jelent</th><th>Eredmény</th></tr></thead>
+        <tbody>
+          <tr><td>A) Élesítés most</td><td>a jelenlegi állapot azonnali élesítése</td><td><span class="chip bad">✕ nem üzemképes</span></td></tr>
+          <tr><td>B) Frissítés helyben</td><td>a régi rendszer megfoltozása</td><td><span class="chip warn">⚠ kockázatos, elavult marad</span></td></tr>
+          <tr class="colhi"><td>C) Újraépítés</td><td>korszerű alapokra helyezés</td><td><span class="chip ok">✓ ezt javaslom</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="lvl reveal">Mit nyersz az újraépítéssel?</h3>
+    <ul class="clean check reveal">
+      <li>működő <strong>Stripe-fizetés</strong> → tényleg lehet vásárolni, valódi bevétel;</li>
+      <li><strong>jogtisztán hirdethető</strong> oldal (Consent Mode) → biztonságos hirdetési növekedés;</li>
+      <li>gyorsabb oldal → jobb vásárlási arány és Google-helyezés;</li>
+      <li>egyszerű admin → <strong>Kata maga is</strong> tud kurzust feltölteni, szöveget módosítani;</li>
+      <li>modern, bizalomkeltő megjelenés és könnyen bővíthető alap a jövőre.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== 2. AZ OLDAL ===== -->
+<section class="block" id="oldal">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Mit építünk újra</span>
+      <h2>Az oldal jellege, célja és készenléte</h2>
+      <p class="intro">Az ostinato.hu nem egyszerű bemutatkozó oldal — egy működő webáruház és tagsági rendszer. Épp ezért számít, hogy minden alkatrésze megbízható legyen.</p>
+    </div>
+
+    <div class="callout reveal">
+      <p><span class="k">A cél:</span> Ördög Kata online zongoraiskolája — strukturált, videós kurzusok kezdőtől haladóig, a tanulók saját tempójában. A működést négy, egymásra épülő réteg adja:</p>
+    </div>
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Réteg</th><th>Mit csinál</th><th>Mire épül</th></tr></thead>
+        <tbody>
+          <tr><td>🛒 Webáruház</td><td>A kurzusok megvásárlása, kosár, fizetés</td><td>WooCommerce</td></tr>
+          <tr><td>🔑 Tagsági rendszer</td><td>Ki mit lát / ér el a vásárlás után</td><td>WooCommerce Memberships</td></tr>
+          <tr><td>🎥 Kurzusfelület</td><td>A videós leckék lejátszása, tananyag</td><td>Presto Player + Elementor</td></tr>
+          <tr><td>📝 Tartalom / blog / hírlevél</td><td>Marketing, SEO, feliratkozók</td><td>WordPress + Yoast</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout gold reveal"><p><span class="k">Miért fontos ez?</span> Mert épp ezek a kritikus rétegek — a <strong>fizetés, a tagság, a videó és a sütikezelés</strong> — avultak el a leglátványosabban. Egy pénzt mozgató, hozzáférést kezelő rendszernél alapfeltétel, hogy minden alkatrész naprakész legyen.</p></div>
+
+    <h3 class="lvl reveal">Hol tart most tartalmilag?</h3>
+    <p class="reveal" style="color:var(--ink-soft);margin-bottom:6px">A tartalom több ponton még „prototípus" — ez természetes, hiszen annak idején nem fejeztük be. A jó hír: ez a <strong>könnyebbik</strong> feladat.</p>
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Terület</th><th>Jelenlegi állapot</th></tr></thead>
+        <tbody>
+          <tr><td>Szövegek</td><td>Több helyen helykitöltő szöveg (Lorem ipsum, „Ez a címsor" típusú próbacímek)</td></tr>
+          <tr><td>Képek</td><td>Placeholder / próbaképek a végleges fotók helyett</td></tr>
+          <tr><td>GYIK</td><td>Kidolgozatlan, kitöltetlen kérdés-válasz párok</td></tr>
+          <tr><td>Kurzusok</td><td>Nincs élesen feltöltve valódi kurzus, ár és leírás</td></tr>
+          <tr><td>Lábléc</td><td>Még 2022-es a copyright év</td></tr>
+          <tr><td>Vásárlás</td><td>A fizetési szolgáltató megszűnése miatt nem teljesíthető</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout reveal italic"><p>Összegezve: a tartalmi hiányok pótolhatók. <strong>A fő akadály nem ez</strong>, hanem az alatta lévő technikai környezet — erről szól a következő fejezet.</p></div>
+  </div>
+</section>
+
+<!-- ===== 3. TECHNIKAI AUDIT ===== -->
+<section class="block" id="audit">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Technikai állapotfelmérés</span>
+      <h2>Itt van a kutya elásva</h2>
+      <p class="intro">Az oldal kereskedelmi „motorja" 2022-ben befagyott, miközben körülötte mindent kicseréltek. Ez a kombináció teszi veszélyessé a sima frissítést.</p>
+    </div>
+
+    <h3 class="lvl reveal">A környezet pillanatképe</h3>
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Komponens</th><th>Telepített</th><th>2026-os aktuális</th><th>Elmaradás</th><th class="c">Kockázat</th></tr></thead>
+        <tbody>
+          <tr><td>WooCommerce</td><td>6.5.2 <span style="color:var(--muted)">(2022. ápr.)</span></td><td>~10.x</td><td>~4 főverzió</td><td class="c"><span class="chip bad">Magas</span></td></tr>
+          <tr><td>Elementor</td><td>3.6.5</td><td>4.x</td><td>egy generáció (konténer-váltás)</td><td class="c"><span class="chip bad">Magas</span></td></tr>
+          <tr><td>WC Memberships</td><td>régi (2022-es)</td><td>aktuális</td><td>több főverzió</td><td class="c"><span class="chip bad">Magas</span></td></tr>
+          <tr><td>WordPress mag</td><td>frissítés vár</td><td>legfrissebb</td><td>aszinkron a pluginekkel</td><td class="c"><span class="chip warn">Közepes</span></td></tr>
+          <tr><td>PHP</td><td>7.4 <span style="color:var(--muted)">(EOL 2022 vége)</span></td><td>8.2 / 8.3</td><td>1–2 főverzió</td><td class="c"><span class="chip bad">Magas</span></td></tr>
+          <tr><td>Webszerver</td><td>Apache</td><td>—</td><td>—</td><td class="c"><span class="chip neutral">—</span></td></tr>
+          <tr><td>Cache / CDN</td><td>NitroPack</td><td>korszerűbb alt.</td><td>—</td><td class="c"><span class="chip warn">Közepes</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout gold reveal"><p><span class="k">Egy fontos megfigyelés.</span> A WordPress-mag idő közben mozoghatott, miközben a kereskedelmi réteg — WooCommerce, Elementor, fizetés — 2022-ben befagyott. <strong>Pont ez a szétcsúszás a legkockázatosabb:</strong> korszerű mag alatt négyéves, nem kompatibilis bővítmények futnak. Bármilyen frissítési kísérletnél ez vezet leggyakrabban végzetes hibához.</p></div>
+
+    <h3 class="lvl reveal">Mi történt négy év alatt? — nem az oldal romlott el, hanem az iparág lépett</h3>
+    <div class="grid c2">
+      <div class="card reveal"><div class="ic">🧱</div><h4>Elementor konténer-váltás</h4><p>A 3.x még a régi „display block" elrendezést használja; az Elementor azóta flexbox/grid konténerre tért át. <strong>Új szekciót/elemet már csak az új rendszerben lehet létrehozni</strong>, miközben a régi tartalom a régin marad — így <strong>vegyes kódhalmaz</strong> keletkezik. Ez rontja a kódminőséget: <em>admin szinten</em> inkonzisztens szerkesztőfelületek (kétféle építő-logika), <em>látogatói szinten</em> széteső layoutok és lassuló oldal.</p></div>
+      <div class="card reveal"><div class="ic">🐘</div><h4>PHP 7.4 → 8.x</h4><p>Az oldal PHP 7.4-en fut, aminek <strong>támogatása 2022 vége óta megszűnt</strong> (nincs több biztonsági frissítés). A 8.x viszont sok régi kódot már nem tolerál. Csapda: maradni kockázat, lépni a jelenlegi pluginekkel törést okoz.</p></div>
+      <div class="card reveal"><div class="ic">🍪</div><h4>Google Consent Mode v2 (2024)</h4><p>A sütikezelésnek 2024 óta új, kötelező követelményei vannak. A jelenlegi cookie-plugin ennek nem felel meg → nem lehet jogtisztán hirdetni, és bírságot kockáztat.</p></div>
+      <div class="card reveal"><div class="ic">💳</div><h4>Paylike kivonulás → Stripe</h4><p>A beépített fizetési szolgáltató megszűnt. A piaci sztenderd ma a Stripe — ez nem csere-darab, hanem új fizetési integráció.</p></div>
+    </div>
+    <div class="callout reveal italic" style="margin-top:18px"><p><span class="k">Tehát:</span> nem arról van szó, hogy az oldal rosszul készült. Arról van szó, hogy a körülötte lévő egész ökoszisztéma kicserélődött — és egy befejezetlenül, négy évig állt oldal ezt nem tudta „magától" lekövetni.</p></div>
+
+    <h3 class="lvl reveal">Plugin-leltár — mi avult el és mivel váltjuk ki</h3>
+    <p class="reveal" style="color:var(--ink-soft);margin-bottom:4px">Ez nem azt jelenti, hogy 2022-ben rosszul választottuk őket — egyszerűen lejárt az idejük.</p>
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Plugin</th><th>Állapot</th><th>Probléma 2026-ban</th><th>Korszerű kiváltás</th></tr></thead>
+        <tbody>
+          <tr><td>WooCommerce Paylike Gateway</td><td><span class="chip bad">Megszűnt</span></td><td>A szolgáltató kivonult — nincs működő fizetés</td><td>Stripe integráció</td></tr>
+          <tr><td>GDPR Cookie Compliance</td><td><span class="chip bad">Nem megfelelő</span></td><td>Nem támogatja a Consent Mode-ot → hirdetési tiltás</td><td>Consent Mode-kompatibilis sütikezelő</td></tr>
+          <tr><td>NitroPack</td><td><span class="chip warn">Nem ajánlott</span></td><td>Külső „dobozos" cache; saját megoldás stabilabb</td><td>Saját cache + képoptimalizálás</td></tr>
+          <tr><td>Envato Elements</td><td><span class="chip bad">Megszűnt</span></td><td>A bővítmény támogatása megszűnt</td><td>Beépített, natív design-elemek</td></tr>
+          <tr><td>HelloPack</td><td><span class="chip warn">Lejárt licensz</span></td><td>A prémium előfizetés nem él</td><td>Hivatalos prémium licenszek (általam)</td></tr>
+          <tr><td>The Plus Addons for Elementor</td><td><span class="chip warn">Kockázatos</span></td><td>Addon-rétegek lassúak és sérülékenyek</td><td>Korszerű, könnyű építő-megoldás</td></tr>
+          <tr><td>Presto Player</td><td><span class="chip warn">Elavult</span></td><td>Mai videós igényekre korlátozott</td><td>Modern videó-beágyazás</td></tr>
+          <tr><td>Quiz Maker</td><td><span class="chip warn">Elavult</span></td><td>Nehézkesen kezelhető</td><td>Könnyebb kvíz-megoldás</td></tr>
+          <tr><td>wpDiscuz</td><td><span class="chip warn">Elavult</span></td><td>Korszerűbb megoldások vannak</td><td>Modern megoldás (ha kell)</td></tr>
+          <tr><td>Plugin Organizer</td><td><span class="chip warn">Elavult</span></td><td>Régi optimalizáló logika</td><td>Korszerű teljesítmény-megoldás</td></tr>
+          <tr><td>UpdraftPlus</td><td><span class="chip neutral">Cserélhető</span></td><td>Megbízhatóbb mentés elérhető</td><td>Korszerű, ütemezett backup</td></tr>
+          <tr><td>Akismet Anti-Spam</td><td><span class="chip neutral">Súlytalan</span></td><td>Mai űrlapokra már nem hatékony</td><td>Modern captcha / spam-szűrés</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="lvl reveal">Miért zsákutca a „csak frissítsük fel"?</h3>
+    <div class="grid c2">
+      <div class="card reveal"><div class="num">01</div><h4>Reális a végzetes hiba</h4><p>Egy lépésben négy évnyi változás (WooCommerce 6.5→10, Elementor 3→4, plusz a PHP-ugrás) több tucat „töréspontot" zúdít rá. A fehér képernyős hiba utáni hibakeresés bizonytalan, gyakran drágább, mint tiszta lapról építeni.</p></div>
+      <div class="card reveal"><div class="num">02</div><h4>Ha lefut is, elavult marad</h4><p>Ott marad alatta a régi konténer, a köré épült logika, a leváltandó pluginek. A technikai adósságot nem törlesztettük, csak elhalasztottuk — fél-egy év múlva ugyanitt tartunk, újra fizetve.</p></div>
+    </div>
+    <div class="callout gold reveal italic" style="margin-top:18px"><p><span class="k">Analógia:</span> felújíthatjuk a motort egy autóban, de ha az alváz és a karosszéria elkorrodált, akkor sem lesz belőle megbízható kocsi. Az ostinato.hu „alváza" — az alaparchitektúra — az, ami megújításra szorul.</p></div>
+  </div>
+</section>
+
+<!-- ===== 4. A HÁROM ÚT ===== -->
+<section class="block" id="utak">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Döntés</span>
+      <h2>A három lehetséges út</h2>
+      <p class="intro">Három valódi opció van. A javasolt út (C) árát megadom; a másik kettőt összehasonlításként, a következményeikkel együtt teszem mellé.</p>
+    </div>
+
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Szempont</th><th class="c">A) Élesítés most</th><th class="c">B) Frissítés helyben</th><th class="c colhi">C) Újraépítés</th></tr></thead>
+        <tbody>
+          <tr><td>Biztonság</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Sebesség</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Stabilitás (fatal error kockázat)</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark bad">✕</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Működő fizetés</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>GDPR / Consent megfelelés</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Hirdethetőség</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Bővíthetőség</td><td class="c"><span class="mark bad">✕</span></td><td class="c"><span class="mark bad">✕</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Admin-kezelhetőség</td><td class="c"><span class="mark warn">⚠</span></td><td class="c"><span class="mark warn">⚠</span></td><td class="c colhi"><span class="mark ok">✓</span></td></tr>
+          <tr><td>Hosszú távú költség</td><td class="c"><span class="chip bad">magas, ismétlődő</span></td><td class="c"><span class="chip bad">magas</span></td><td class="c colhi"><span class="chip ok">alacsony</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="reveal" style="font-size:.85rem;color:var(--muted)"><span class="mark ok">✓</span> megfelelő · <span class="mark warn">⚠</span> részleges / kockázatos · <span class="mark bad">✕</span> nem megfelelő</p>
+
+    <div class="path reveal">
+      <div class="lab">A) Élesítés a jelenlegi állapotban <span class="verdict no">Nem javasolt</span></div>
+      <p>Gyors lenne, de érdemben nem üzemképes: nincs működő fizetés, a sütikezelés nem jogtiszta, a tartalom helykitöltő, biztonságilag sebezhető. Élesen ez inkább rontaná Kata megítélését.</p>
+    </div>
+    <div class="path reveal">
+      <div class="lab">B) Frissítés helyben (patch &amp; launch) <span class="verdict part">Részmegoldás</span></div>
+      <p>A meglévőt frissítenénk és összefoltoznánk. A kimenet bizonytalan: reális a végzetes hiba, a hibakeresés időigénye nehezen tervezhető. Siker esetén is elavult architektúra és technikai adósság marad — a „most olcsóbb, később drágább" forgatókönyv.</p>
+    </div>
+    <div class="path rec reveal">
+      <div class="lab">C) Újraépítés korszerű alapokon <span class="badge-rec">Javasolt</span></div>
+      <p>Tiszta, modern alapokra helyezzük az oldalt, megtartva mindent, ami értékes (márka, koncepció, a már megtervezett modern arculat):</p>
+      <ul class="clean check">
+        <li>friss WordPress + <strong>PHP 8.x</strong>;</li>
+        <li>aktuális <strong>WooCommerce + Memberships</strong>, már a gyors HPOS-adatmodellen;</li>
+        <li><strong>Stripe</strong> fizetés (működő vásárlás);</li>
+        <li><strong>Consent Mode-kompatibilis</strong> sütikezelés (jogtiszta + hirdethető);</li>
+        <li>korszerű, gyors oldalépítő-konténer a régi helyett;</li>
+        <li>saját, finomhangolt cache a NitroPack helyett;</li>
+        <li>hivatalos prémium plugin-licenszek a lejárt HelloPack helyett (ezt biztosítom);</li>
+        <li>korszerű, könnyen karbantartható kurzus- és tagsági felület;</li>
+        <li>valódi tartalom, képek, kurzusok.</li>
+      </ul>
+      <p style="margin-top:8px"><strong>Az eredmény:</strong> gyors, biztonságos, hirdethető, bővíthető és Kata által is könnyen kezelhető oldal — olyan, amit valóban érdemes élesíteni.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. ÉRTÉK & ÁR ===== -->
+<section class="block" id="ar">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Érték &amp; ár</span>
+      <h2>Mit nyersz vele — és miért kerül ez kicsit többe?</h2>
+      <p class="intro">Minden műszaki döntésnek van egy üzleti megfelelője. És őszintén: ez nem ugyanaz a munka, mint amiről eredetileg szó volt.</p>
+    </div>
+
+    <div class="table-scroll reveal">
+      <table>
+        <thead><tr><th>Műszaki előny</th><th>Amit Kata ebből lát</th></tr></thead>
+        <tbody>
+          <tr><td>Gyorsabb oldal</td><td>Jobb élmény → magasabb vásárlási arány, jobb Google-helyezés</td></tr>
+          <tr><td>Működő Stripe-fizetés</td><td>Tényleg lehet vásárolni → valódi bevétel</td></tr>
+          <tr><td>Consent Mode-megfelelés</td><td>Jogtisztán hirdethető → biztonságos hirdetési növekedés</td></tr>
+          <tr><td>Egyszerű admin</td><td>Kata maga is fel tud tölteni kurzust, módosítani szöveget</td></tr>
+          <tr><td>Modern dizájn</td><td>Profi, bizalomkeltő megjelenés → erősebb márka</td></tr>
+          <tr><td>Karbantartható alap</td><td>Az új funkciók gyorsan és olcsón ráépíthetők</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="lvl reveal">Miért három feladat egyben?</h3>
+    <div class="grid c3">
+      <div class="card reveal"><div class="ic">🏗️</div><h4>Korszerű alap</h4><p>Friss, biztonságos, gyors technikai környezet.</p></div>
+      <div class="card reveal"><div class="ic">🔌</div><h4>Rendszerek újrahuzalozása</h4><p>Fizetés (Stripe), tagság, kurzusfelület, sütikezelés.</p></div>
+      <div class="card reveal"><div class="ic">✍️</div><h4>Tartalom befejezése</h4><p>Valódi szövegek, képek, kurzusok.</p></div>
+    </div>
+
+    <div class="price reveal" style="margin-top:24px">
+      <div>
+        <span class="pill">A javasolt újraépítés díja</span>
+        <div class="amount"><em>200 000 Ft</em></div>
+        <div class="tag" style="margin-top:8px">20 munkaóra × 10 000 Ft/óra</div>
+      </div>
+      <div class="calc"><strong style="color:#fff">Egyszeri tétel</strong> — szemben a „foltozzunk" úttal, ami jó eséllyel fél éven belül újabb, ismétlődő kiadást jelent. „Egyszer, jól megépíteni mindig olcsóbb, mint kétszer, félig." A pontos ütemtervet a megrendelés után egyeztetjük.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. LÉPÉSEK + FOGALOMTÁR ===== -->
+<section class="block" id="lepesek">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <span class="eyebrow">Innen tovább</span>
+      <h2>Javasolt következő lépések</h2>
+    </div>
+    <ol class="steps reveal">
+      <li><strong>Részletes technikai feltárás</strong> — a tárhely- és szerverkörnyezet teljes feltérképezése, és a pontos újraépítési/migrációs lista összeállítása.</li>
+      <li><strong>Közös döntés</strong> — átbeszéljük a három utat, és kiválasztjuk a Katának megfelelőt (a javaslatom a <strong>C</strong>).</li>
+      <li><strong>Indulás</strong> — a döntés után rögzítjük az ütemtervet, és megkezdjük a munkát a C út szerint (20 munkaóra, 200 000 Ft).</li>
+    </ol>
+    <div class="callout tint reveal italic"><p><span class="k">Egy mondatban:</span> az ostinato.hu jó koncepció erős alapokkal — most az a feladat, hogy a technika is felzárkózzon hozzá, hogy végre élesen, magabiztosan működhessen.</p></div>
+
+    <h3 class="lvl reveal">Fogalomtár — egy mondatban</h3>
+    <dl class="gloss reveal">
+      <dt>Fatal error (végzetes hiba)</dt><dd>Olyan programhiba, amitől az oldal teljesen leáll (fehér képernyő). Frissítéskor a leggyakoribb buktató.</dd>
+      <dt>PHP</dt><dd>A szerveroldali „nyelv", amin a WordPress fut. A régi verziók nem kapnak biztonsági frissítést, és sok modern bővítmény nem fut rajtuk.</dd>
+      <dt>Consent Mode (Google)</dt><dd>A sütik/hirdetési hozzájárulás 2024 óta kötelező, szabványos kezelési módja. Enélkül nem lehet jogtisztán hirdetni.</dd>
+      <dt>HPOS</dt><dd>A WooCommerce új, gyorsabb rendelés-adattárolása, ami a mai verziók alapértelmezése.</dd>
+      <dt>Flexbox/grid konténer (Elementor)</dt><dd>A modern, gyorsabb és rugalmasabb elrendezési mód, ami leváltotta a régi „display block" felépítést.</dd>
+      <dt>Technikai adósság</dt><dd>A halasztott frissítések „kamatos" költsége — minél tovább halogatjuk, annál drágább behozni.</dd>
+      <dt>Stripe</dt><dd>Vezető, megbízható online fizetési szolgáltató; a megszűnt Paylike korszerű utódja.</dd>
+    </dl>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="foot"></footer>
+
+<script>
+const tb=document.getElementById('topbar');
+const onScroll=()=>tb.classList.toggle('scrolled',scrollY>24);
+onScroll();addEventListener('scroll',onScroll,{passive:true});
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.1,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
